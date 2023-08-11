@@ -5,6 +5,7 @@ import com.example.springsql.repositorries.StudentRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 @Service
@@ -33,5 +34,13 @@ public class StudentServiceImpl implements  StudentService {
     @Override
     public void deleteStudent(long id) {
         studentRepository.deleteById(id);
+    }
+
+    public Collection<Student> getAllStudents() {
+       return studentRepository.findAll();
+    }
+
+    public Collection<Student> findByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
     }
 }

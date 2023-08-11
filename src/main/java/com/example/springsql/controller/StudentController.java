@@ -2,10 +2,11 @@ package com.example.springsql.controller;
 
 import com.example.springsql.entities.Student;
 import com.example.springsql.service.StudentService;
-import com.example.springsql.service.StudentServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/student")
@@ -14,6 +15,14 @@ public class StudentController {
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<Collection<Student>> getAllStudents(@RequestParam(required = false) Integer min, @RequestParam(required = false) Integer max) {
+        if (min != null && max != null) {
+            return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+        }
+        return ResponseEntity.ok(studentService.getAllStudents());
     }
 
     @GetMapping("{id}")

@@ -4,6 +4,7 @@ import com.example.springsql.entities.Faculty;
 import com.example.springsql.repositorries.FacultyRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 @Service
@@ -32,5 +33,17 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public void deleteFaculty(long id) {
         facultyRepository.deleteById(id);
+    }
+    @Override
+    public Collection<Faculty> findAllFaculty() {
+        return facultyRepository.findAll();
+    }
+    @Override
+    public Collection<Faculty> findAllFacultyByColor(String color) {
+        return  facultyRepository.findAllByColorIgnoreCase(color);
+    }
+    @Override
+    public Collection<Faculty> findAllFacultyByName(String name) {
+        return facultyRepository.findAllByNameIgnoreCase(name);
     }
 }
