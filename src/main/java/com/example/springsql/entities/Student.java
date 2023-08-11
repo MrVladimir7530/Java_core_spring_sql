@@ -3,6 +3,8 @@ package com.example.springsql.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +14,8 @@ public class Student {
     private long id;
     private String name;
     private int age;
+    @OneToMany(mappedBy = "student")
+    private Collection<Faculty> faculties;
 
     public Student() {
 

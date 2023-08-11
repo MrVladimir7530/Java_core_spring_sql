@@ -1,8 +1,6 @@
 package com.example.springsql.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -12,9 +10,12 @@ public class Faculty {
     private long id;
     private String name;
     private String color;
-
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
     public Faculty() {
     }
+
 
     public Faculty(long id, String name, String color) {
         this.id = id;
