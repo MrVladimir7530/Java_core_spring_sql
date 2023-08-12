@@ -16,3 +16,6 @@ ORDER By name;
 
 SELECT * FROM student
 ORDER By age;
+
+SELECT s.name, s.age, f.name FROM student s
+    INNER JOIN faculty f on s.id = f.student_id;

@@ -15,7 +15,6 @@ public class Faculty {
     private String color;
     @JsonIgnore
     @OneToMany(mappedBy = "faculty")
-    @JoinColumn(name = "student_id")
     private Set<Student> student;
     public Faculty() {
     }
