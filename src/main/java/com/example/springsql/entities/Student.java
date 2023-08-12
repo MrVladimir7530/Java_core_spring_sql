@@ -1,9 +1,8 @@
 package com.example.springsql.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -14,11 +13,16 @@ public class Student {
     private long id;
     private String name;
     private int age;
-    @OneToMany(mappedBy = "student")
-    private Collection<Faculty> faculties;
+    @JsonIgnore
+    @ManyToOne
+    private Faculty faculties;
 
     public Student() {
+    }
 
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
     }
     public Student(long id, String name, int age) {
         this.id = id;
