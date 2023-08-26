@@ -1,13 +1,27 @@
 package com.example.springsql.entities;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+import java.util.Objects;
+import java.util.Set;
+
+@Entity
 public class Faculty {
+    @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String color;
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "faculty")
+    private Set<Student> student;
     public Faculty() {
+    }
+
+    public Faculty(String name, String color) {
+        this.name = name;
+        this.color = color;
     }
 
     public Faculty(long id, String name, String color) {

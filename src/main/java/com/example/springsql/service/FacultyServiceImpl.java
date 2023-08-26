@@ -1,37 +1,49 @@
 package com.example.springsql.service;
 
 import com.example.springsql.entities.Faculty;
+import com.example.springsql.repositorries.FacultyRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
-    private long count = 0;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
+
     @Override
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(count++);
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Faculty findFaculty(long id) {
-        return faculties.get(id);
+        return facultyRepository.findById(id).get();
     }
 
     @Override
     public Faculty editFaculty(long id, Faculty faculty) {
-        if (faculties.containsKey(id)) {
-            return null;
-        }
-        faculties.put(id, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public void deleteFaculty(long id) {
-        faculties.remove(id);
+        facultyRepository.deleteById(id);
+    }
+    @Override
+    public Collection<Faculty> findAllFaculty() {
+        return facultyRepository.findAll();
+    }
+    @Override
+    public Collection<Faculty> findAllFacultyByColor(String color) {
+        return  facultyRepository.findAllByColorIgnoreCase(color);
+    }
+    @Override
+    public Collection<Faculty> findAllFacultyByName(String name) {
+        return facultyRepository.findAllByNameIgnoreCase(name);
     }
 }
