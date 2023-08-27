@@ -51,7 +51,7 @@ public class StudentControllerWithMockTest {
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/faculty")
+                        .post("/student")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ public class StudentControllerWithMockTest {
                 .andExpect(jsonPath("$.age").value(age));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/1")
+                        .get("/student/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
@@ -76,7 +76,7 @@ public class StudentControllerWithMockTest {
                 new Student(2L, "student2", 29)));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty"))
+                        .get("/student"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -106,7 +106,7 @@ public class StudentControllerWithMockTest {
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty/1")
+                        .put("/student/1")
                         .content(facultyObject2.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -116,7 +116,7 @@ public class StudentControllerWithMockTest {
                 .andExpect(jsonPath("$.age").value(age));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/1")
+                        .delete("/student/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

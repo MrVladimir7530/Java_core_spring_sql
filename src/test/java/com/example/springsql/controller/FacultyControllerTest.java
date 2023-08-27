@@ -34,7 +34,7 @@ public class FacultyControllerTest {
 
         Faculty newFaculty = newFacultyResponse.getBody();
 
-        ResponseEntity<Faculty> facultyEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/"+ newFaculty.getId(), Faculty.class);
+        ResponseEntity<Faculty> facultyEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/" + newFaculty.getId(), Faculty.class);
 
         Faculty faculty = facultyEntity.getBody();
         assertThat(faculty.getId()).isEqualTo(newFaculty.getId());
@@ -64,9 +64,9 @@ public class FacultyControllerTest {
         assertThat(newFacultyResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Faculty newFaculty = newFacultyResponse.getBody();
-   testRestTemplate.delete("http://localhost:" + port + "/faculty/"+ newFaculty.getId(), Faculty.class);
+   testRestTemplate.delete("http://localhost:" + port + "/faculty/" + newFaculty.getId(), Faculty.class);
 
-        ResponseEntity<Faculty> facultyEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/"+ newFaculty.getId(), Faculty.class);
+        ResponseEntity<Faculty> facultyEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/" + newFaculty.getId(), Faculty.class);
         Faculty faculty = facultyEntity.getBody();
         assertThat(faculty.getName()).isNull();
         assertThat(faculty.getColor()).isNull();

@@ -48,7 +48,7 @@ public class FacultyControllerWithMockTest {
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/faculty")
+                        .post("/student")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -58,7 +58,7 @@ public class FacultyControllerWithMockTest {
                 .andExpect(jsonPath("$.color").value(color));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/1")
+                        .get("/student/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
@@ -72,7 +72,7 @@ public class FacultyControllerWithMockTest {
         when(facultyRepository.findAll()).thenReturn(List.of(new Faculty(1L, "faculty1", "green"),
                 new Faculty(2L, "faculty2", "red")));
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/faculty"))
+                .get("/student"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -101,7 +101,7 @@ public class FacultyControllerWithMockTest {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty/1")
+                        .put("/student/1")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -111,7 +111,7 @@ public class FacultyControllerWithMockTest {
                 .andExpect(jsonPath("$.color").value(color));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/1")
+                        .delete("/student/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

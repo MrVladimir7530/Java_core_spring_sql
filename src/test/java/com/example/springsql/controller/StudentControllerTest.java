@@ -27,13 +27,13 @@ public class StudentControllerTest {
     @Test
     public void testGetStudentById() {
         ResponseEntity<Student> newStudentResponse =
-                testRestTemplate.postForEntity("http://localhost:" + port + "/faculty", new Student("VovaTest", 100), Student.class);
+                testRestTemplate.postForEntity("http://localhost:" + port + "/student", new Student("VovaTest", 100), Student.class);
 
         assertThat(newStudentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Student newStudent = newStudentResponse.getBody();
 
-        ResponseEntity<Student> responseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/" + newStudent.getId(), Student.class);
+        ResponseEntity<Student> responseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/student/" + newStudent.getId(), Student.class);
 
         Student student = responseEntity.getBody();
         assertThat(student.getId()).isEqualTo(newStudent.getId());
@@ -43,11 +43,11 @@ public class StudentControllerTest {
     @Test
     public void testGetAllStudents() {
         ResponseEntity<Student> newStudentResponse =
-                testRestTemplate.postForEntity("http://localhost:" + port + "/faculty", new Student("VovaTest", 100), Student.class);
+                testRestTemplate.postForEntity("http://localhost:" + port + "/student", new Student("VovaTest", 100), Student.class);
 
         assertThat(newStudentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        ResponseEntity<List> responseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty", List.class);
+        ResponseEntity<List> responseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/student", List.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
     }
@@ -55,14 +55,14 @@ public class StudentControllerTest {
     @Test
     public void testDeleteStudents() {
         ResponseEntity<Student> newStudentResponse =
-                testRestTemplate.postForEntity("http://localhost:" + port + "/faculty", new Student("VovaTest", 100), Student.class);
+                testRestTemplate.postForEntity("http://localhost:" + port + "/student", new Student("VovaTest", 100), Student.class);
 
         assertThat(newStudentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Student newStudent = newStudentResponse.getBody();
-        testRestTemplate.delete("http://localhost:" + port + "/faculty/" + newStudent.getId(), Student.class);
+        testRestTemplate.delete("http://localhost:" + port + "/student/" + newStudent.getId(), Student.class);
 
-        ResponseEntity<Student> responseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/faculty/" + newStudent.getId(), Student.class);
+        ResponseEntity<Student> responseEntity = testRestTemplate.getForEntity("http://localhost:" + port + "/student/" + newStudent.getId(), Student.class);
 
         Student student = responseEntity.getBody();
         assertThat(student.getName()).isNull();
