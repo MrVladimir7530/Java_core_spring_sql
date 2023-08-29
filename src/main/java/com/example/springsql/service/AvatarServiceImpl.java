@@ -16,6 +16,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.UUID;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -79,6 +80,12 @@ public class AvatarServiceImpl implements AvatarService {
     public Avatar getAvatarById(Long studentId) {
         return avatarRepository.findByStudentId(studentId).orElseThrow(()->new AvatarNotFoundExceptions("Avatar not found"));
     }
+
+    @Override
+    public List<Avatar> getAvatar() {
+        return avatarRepository.findStudent().get();
+    }
+
 
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".")+1);

@@ -1,12 +1,16 @@
 package com.example.springsql.controller;
 
+import com.example.springsql.entities.AvgStudentByAge;
+import com.example.springsql.entities.CountStudent;
 import com.example.springsql.entities.Student;
+import com.example.springsql.entities.StudentNameAge;
 import com.example.springsql.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -52,5 +56,20 @@ public class StudentController {
     public ResponseEntity<Void> deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/count")
+    public List<CountStudent> getCountStudents() {
+        return studentService.getCountStudents();
+    }
+
+    @GetMapping("/avg")
+    public List<AvgStudentByAge> getAvgStudentByAge() {
+        return studentService.getAvgStudentByAge();
+    }
+
+    @GetMapping("/last")
+    public List<StudentNameAge> getLastStudent() {
+        return studentService.getLastStudent();
     }
 }
