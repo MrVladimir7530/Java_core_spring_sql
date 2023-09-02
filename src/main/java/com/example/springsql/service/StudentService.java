@@ -1,7 +1,5 @@
 package com.example.springsql.service;
 
-import com.example.springsql.entities.AvgStudentByAge;
-import com.example.springsql.entities.CountStudent;
 import com.example.springsql.entities.Student;
 import com.example.springsql.entities.StudentNameAge;
 
@@ -15,7 +13,7 @@ public interface StudentService {
     void deleteStudent(long id);
     Collection<Student> getAllStudents();
     Collection<Student> findByAgeBetween(int min, int max);
-    List<CountStudent> getCountStudents();
-    List<AvgStudentByAge> getAvgStudentByAge();
+    Integer getCountStudents();
+    Integer getAvgStudentByAge();
     List<StudentNameAge> getLastStudent();
 }

@@ -4,8 +4,9 @@ import com.example.springsql.entities.Avatar;
 import com.example.springsql.entities.Student;
 import com.example.springsql.exceptions.AvatarNotFoundExceptions;
 import com.example.springsql.repositorries.AvatarRepository;
-import com.example.springsql.repositorries.StudentRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,10 +17,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class AvatarServiceImpl implements AvatarService {
@@ -82,8 +83,9 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public List<Avatar> getAvatar() {
-        return avatarRepository.findStudent().get();
+    public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return avatarRepository.findAll(pageable).getContent();
     }
 
 

@@ -1,7 +1,5 @@
 package com.example.springsql.service;
 
-import com.example.springsql.entities.AvgStudentByAge;
-import com.example.springsql.entities.CountStudent;
 import com.example.springsql.entities.Student;
 import com.example.springsql.entities.StudentNameAge;
 import com.example.springsql.repositorries.StudentRepository;
@@ -47,12 +45,12 @@ public class StudentServiceImpl implements  StudentService {
     }
 
     @Override
-    public List<CountStudent> getCountStudents() {
+    public Integer getCountStudents() {
         return studentRepository.getCountStudentsByAge();
     }
 
     @Override
-    public List<AvgStudentByAge> getAvgStudentByAge() {
+    public Integer getAvgStudentByAge() {
         return studentRepository.getAvgStudents();
     }
 

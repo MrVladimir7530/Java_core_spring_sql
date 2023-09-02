@@ -1,7 +1,5 @@
 package com.example.springsql.controller;
 
-import com.example.springsql.entities.AvgStudentByAge;
-import com.example.springsql.entities.CountStudent;
 import com.example.springsql.entities.Student;
 import com.example.springsql.entities.StudentNameAge;
 import com.example.springsql.service.StudentService;
@@ -59,12 +57,12 @@ public class StudentController {
     }
 
     @GetMapping("/count")
-    public List<CountStudent> getCountStudents() {
+    public Integer getCountStudents() {
         return studentService.getCountStudents();
     }
 
     @GetMapping("/avg")
-    public List<AvgStudentByAge> getAvgStudentByAge() {
+    public Integer getAvgStudentByAge() {
         return studentService.getAvgStudentByAge();
     }
 
