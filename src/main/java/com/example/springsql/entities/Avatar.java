@@ -31,6 +31,12 @@ public class Avatar {
         this.student = student;
     }
 
+    public Avatar(Long id, Long size, String mediaType) {
+        this.id = id;
+        this.size = size;
+        this.mediaType = mediaType;
+    }
+
     public Long getId() {
         return id;
     }
