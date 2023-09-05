@@ -70,4 +70,10 @@ public class StudentController {
     public List<StudentNameAge> getLastStudent() {
         return studentService.getLastStudent();
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name) {
+        List<Student> studentsByName = studentService.getStudentsByName(name);
+        return ResponseEntity.ok(studentsByName);
+    }
 }
