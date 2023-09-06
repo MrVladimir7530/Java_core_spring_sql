@@ -4,6 +4,8 @@ import com.example.springsql.entities.Avatar;
 import com.example.springsql.entities.Student;
 import com.example.springsql.exceptions.AvatarNotFoundExceptions;
 import com.example.springsql.repositorries.AvatarRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ import java.util.UUID;
 public class AvatarServiceImpl implements AvatarService {
     private final AvatarRepository avatarRepository;
     private final StudentService studentService;
+
+    Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
     @Value("${path.to.avatars.folder}$")
     private String avatarDir;
 
@@ -36,6 +40,7 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.debug("starting upload avatar's method");
         Student student = studentService.findStudent(studentId);
         Path pathFile = Path.of(avatarDir, UUID.randomUUID() + "." + getExtension(avatarFile.getOriginalFilename()));
 
@@ -56,6 +61,7 @@ public class AvatarServiceImpl implements AvatarService {
         avatar.setSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setData(avatarFile.getBytes());
+        logger.debug("saving avatar");
         return avatarRepository.save(avatar);
     }
 
@@ -73,23 +79,27 @@ public class AvatarServiceImpl implements AvatarService {
             graphics2D.drawImage(image, 0, 0, 100, height, null);
             graphics2D.dispose();
             ImageIO.write(preview, getExtension(filePath.getFileName().toString()), baos);
+            logger.debug("reading file");
             return baos.toByteArray();
         }
     }
 
     @Override
     public Avatar getAvatarById(Long studentId) {
+        logger.debug("got avatar by {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElseThrow(()->new AvatarNotFoundExceptions("Avatar not found"));
     }
 
     @Override
     public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        logger.debug("got all avatars");
         return avatarRepository.findAll(pageable).getContent();
     }
 
 
     private String getExtension(String fileName) {
+        logger.debug("got extension");
         return fileName.substring(fileName.lastIndexOf(".")+1);
     }
 }
