@@ -92,8 +92,8 @@ public class StudentServiceImpl implements  StudentService {
         List<Student> studentRepositoryAll = studentRepository.findAll();
         return studentRepositoryAll.stream()
                 .parallel()
-                .sorted((x,y)->x.getName().compareTo(y.getName()))
                 .filter(i -> i.getName().toUpperCase().charAt(0) == character.toUpperCase().charAt(0))
+                .sorted((x,y)->x.getName().compareTo(y.getName()))
                 .collect(Collectors.toList());
     }
 }
