@@ -17,4 +17,5 @@ public interface StudentService {
     Integer getAvgStudentByAge();
     List<StudentNameAge> getLastStudent();
     List<Student> getStudentsByName(String name);
+    List<Student> getStudentByNameWhereNameBeginWithCharacter(String character) throws IllegalArgumentException;
 }

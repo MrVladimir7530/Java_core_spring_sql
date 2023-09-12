@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -62,5 +63,15 @@ public class FacultyServiceImpl implements FacultyService {
     public Collection<Faculty> getFacultyByNameAndColor(String name, String color) {
         logger.debug("got faculties by {} and {}", name, color);
         return facultyRepository.getFacultyByNameAndColor(name, color);
+    }
+
+    @Override
+    public String getLongestFaculty() {
+        logger.debug("got longest faculty");
+        List<Faculty> facultyList = facultyRepository.findAll();
+        return facultyList.stream().parallel()
+                .max((x, y) -> x.getName().length() - y.getName().length())
+                .orElseThrow(() -> new RuntimeException())
+                .getName();
     }
 }

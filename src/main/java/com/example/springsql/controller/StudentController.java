@@ -76,4 +76,15 @@ public class StudentController {
         List<Student> studentsByName = studentService.getStudentsByName(name);
         return ResponseEntity.ok(studentsByName);
     }
+
+    @GetMapping("name/by")
+    public ResponseEntity<List<Student>> getStudentByNameWhereNameBeginWithCharacter(@RequestParam String character) {
+        try {
+            List<Student> studentList = studentService.getStudentByNameWhereNameBeginWithCharacter(character);
+            return ResponseEntity.ok(studentList);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+    }
 }

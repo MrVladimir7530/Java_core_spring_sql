@@ -20,4 +20,6 @@ public interface FacultyService {
     Collection<Faculty> findAllFacultyByName(String name);
 
     Collection<Faculty> getFacultyByNameAndColor(String name, String color);
+
+    String getLongestFaculty();
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements  StudentService {
@@ -63,7 +64,11 @@ public class StudentServiceImpl implements  StudentService {
     @Override
     public Integer getAvgStudentByAge() {
         logger.debug("got avg age student's");
-        return studentRepository.getAvgStudents();
+        List<Student> students = studentRepository.findAll();
+        return (int) students.stream().parallel()
+                .mapToInt(Student::getAge)
+                .summaryStatistics()
+                .getAverage();
     }
 
     @Override
@@ -76,5 +81,19 @@ public class StudentServiceImpl implements  StudentService {
     public List<Student> getStudentsByName(String name) {
         logger.debug("got students by {}", name);
         return studentRepository.getStudentByName(name);
+    }
+
+    @Override
+    public List<Student> getStudentByNameWhereNameBeginWithCharacter(String character) throws IllegalArgumentException {
+        logger.debug("got students by character {}", character);
+        if (character.length() > 1 || character.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+        List<Student> studentRepositoryAll = studentRepository.findAll();
+        return studentRepositoryAll.stream()
+                .parallel()
+                .sorted((x,y)->x.getName().compareTo(y.getName()))
+                .filter(i -> i.getName().toUpperCase().charAt(0) == character.toUpperCase().charAt(0))
+                .collect(Collectors.toList());
     }
 }
