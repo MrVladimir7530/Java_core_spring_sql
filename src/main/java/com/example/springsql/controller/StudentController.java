@@ -85,6 +85,18 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
+
+    @GetMapping("thread/console")
+    public ResponseEntity<List<Student>> printInConsoleWithThreadWithoutOrder() {
+        List<Student> studentList = studentService.printStudentInConsoleWithThreadWithoutOrder();
+        return ResponseEntity.ok(studentList);
+    }
+
+    @GetMapping("thread/console/with/order")
+    public ResponseEntity<List<Student>> printInConsoleWithThreadWithOrder() {
+        List<Student> studentList = studentService.printStudentInConsoleWithThreadWithOrder();
+        return ResponseEntity.ok(studentList);
+    }
+
 }

@@ -18,4 +18,6 @@ public interface StudentService {
     List<StudentNameAge> getLastStudent();
     List<Student> getStudentsByName(String name);
     List<Student> getStudentByNameWhereNameBeginWithCharacter(String character) throws IllegalArgumentException;
+    List<Student> printStudentInConsoleWithThreadWithoutOrder();
+    List<Student> printStudentInConsoleWithThreadWithOrder();
 }

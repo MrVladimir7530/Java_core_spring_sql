@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class StudentServiceImpl implements  StudentService {
+public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
@@ -47,7 +47,7 @@ public class StudentServiceImpl implements  StudentService {
 
     public Collection<Student> getAllStudents() {
         logger.debug("got all students");
-       return studentRepository.findAll();
+        return studentRepository.findAll();
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {
@@ -93,7 +93,57 @@ public class StudentServiceImpl implements  StudentService {
         return studentRepositoryAll.stream()
                 .parallel()
                 .filter(i -> i.getName().toUpperCase().charAt(0) == character.toUpperCase().charAt(0))
-                .sorted((x,y)->x.getName().compareTo(y.getName()))
+                .sorted((x, y) -> x.getName().compareTo(y.getName()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Student> printStudentInConsoleWithThreadWithoutOrder() {
+        logger.debug("got student with thread without order");
+        List<Student> students = studentRepository.findAll();
+
+        new Thread(() -> {
+            System.out.println(students.get(2));
+            System.out.println(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4));
+            System.out.println(students.get(5));
+
+        }).start();
+
+        System.out.println(students.get(0));
+        System.out.println(students.get(1));
+
+        return students;
+    }
+
+    @Override
+    public List<Student> printStudentInConsoleWithThreadWithOrder() {
+        logger.debug("got student with thread with order");
+        List<Student> students = studentRepository.findAll();
+
+        synchronized (students) {
+            System.out.println(students.get(0));
+            System.out.println(students.get(1));
+        }
+
+        new Thread(() -> {
+            synchronized (students) {
+                System.out.println(students.get(2));
+                System.out.println(students.get(3));
+            }
+        }).start();
+
+        new Thread(() -> {
+            synchronized (students) {
+                System.out.println(students.get(4));
+                System.out.println(students.get(5));
+            }
+
+        }).start();
+
+        return students;
     }
 }
