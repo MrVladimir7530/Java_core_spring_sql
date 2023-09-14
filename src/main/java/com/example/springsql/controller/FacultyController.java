@@ -16,6 +16,7 @@ public class FacultyController {
     public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
     }
+
     @GetMapping
     public ResponseEntity<Collection<Faculty>> getAllFaculty(@RequestParam(required = false) String color, @RequestParam(required = false) String name) {
         if (color != null && !color.isBlank()) {
@@ -55,4 +56,17 @@ public class FacultyController {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("name/color")
+    public ResponseEntity<Collection<Faculty>> getStudentsByNameAndColor(@RequestParam String name, @RequestParam String color) {
+        Collection<Faculty> facultyByNameAndColor = facultyService.getFacultyByNameAndColor(name, color);
+        return ResponseEntity.ok(facultyByNameAndColor);
+    }
+
+    @GetMapping("name/longest")
+    public ResponseEntity<String> getLongestNameFaculty() {
+        String longestFaculty = facultyService.getLongestFaculty();
+        return ResponseEntity.ok(longestFaculty);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.springsql.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 public class Avatar {
@@ -29,6 +30,12 @@ public class Avatar {
         this.mediaType = mediaType;
         this.data = data;
         this.student = student;
+    }
+
+    public Avatar(Long id, Long size, String mediaType) {
+        this.id = id;
+        this.size = size;
+        this.mediaType = mediaType;
     }
 
     public Long getId() {
@@ -77,5 +84,17 @@ public class Avatar {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    @Override
+    public String toString() {
+        return "Avatar{" +
+                "id=" + id +
+                ", path='" + path + '\'' +
+                ", size=" + size +
+                ", mediaType='" + mediaType + '\'' +
+                ", data=" + Arrays.toString(data) +
+                ", student=" + student +
+                '}';
     }
 }

@@ -1,16 +1,21 @@
 package com.example.springsql.service;
 
 import com.example.springsql.entities.Student;
+import com.example.springsql.entities.StudentNameAge;
 import com.example.springsql.repositorries.StudentRepository;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class StudentServiceImpl implements  StudentService {
+public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
+
+    Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -18,29 +23,127 @@ public class StudentServiceImpl implements  StudentService {
 
     @Override
     public Student addStudent(Student student) {
+        logger.debug("Student {} added in database", student);
         return studentRepository.save(student);
     }
 
     @Override
     public Student findStudent(long id) {
+        logger.debug("Student found by {}", id);
         return studentRepository.findById(id).get();
     }
 
     @Override
     public Student editStudent(long id, Student student) {
+        logger.debug("Student {} added in database by {}", student, id);
         return studentRepository.save(student);
     }
 
     @Override
     public void deleteStudent(long id) {
+        logger.debug("Student deleted by {}", id);
         studentRepository.deleteById(id);
     }
 
     public Collection<Student> getAllStudents() {
-       return studentRepository.findAll();
+        logger.debug("got all students");
+        return studentRepository.findAll();
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {
+        logger.debug("got students by age between {} and {}", min, max);
         return studentRepository.findByAgeBetween(min, max);
+    }
+
+    @Override
+    public Integer getCountStudents() {
+        logger.debug("got count students");
+        return studentRepository.getCountStudentsByAge();
+    }
+
+    @Override
+    public Integer getAvgStudentByAge() {
+        logger.debug("got avg age student's");
+        List<Student> students = studentRepository.findAll();
+        return (int) students.stream().parallel()
+                .mapToInt(Student::getAge)
+                .summaryStatistics()
+                .getAverage();
+    }
+
+    @Override
+    public List<StudentNameAge> getLastStudent() {
+        logger.debug("got last student");
+        return studentRepository.getLastStudents();
+    }
+
+    @Override
+    public List<Student> getStudentsByName(String name) {
+        logger.debug("got students by {}", name);
+        return studentRepository.getStudentByName(name);
+    }
+
+    @Override
+    public List<Student> getStudentByNameWhereNameBeginWithCharacter(String character) throws IllegalArgumentException {
+        logger.debug("got students by character {}", character);
+        if (character.length() > 1 || character.isBlank()) {
+            throw new IllegalArgumentException();
+        }
+        List<Student> studentRepositoryAll = studentRepository.findAll();
+        return studentRepositoryAll.stream()
+                .parallel()
+                .filter(i -> i.getName().toUpperCase().charAt(0) == character.toUpperCase().charAt(0))
+                .sorted((x, y) -> x.getName().compareTo(y.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Student> printStudentInConsoleWithThreadWithoutOrder() {
+        logger.debug("got student with thread without order");
+        List<Student> students = studentRepository.findAll();
+
+        new Thread(() -> {
+            System.out.println(students.get(2));
+            System.out.println(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4));
+            System.out.println(students.get(5));
+
+        }).start();
+
+        System.out.println(students.get(0));
+        System.out.println(students.get(1));
+
+        return students;
+    }
+
+    @Override
+    public List<Student> printStudentInConsoleWithThreadWithOrder() {
+        logger.debug("got student with thread with order");
+        List<Student> students = studentRepository.findAll();
+
+        synchronized (students) {
+            System.out.println(students.get(0));
+            System.out.println(students.get(1));
+        }
+
+        new Thread(() -> {
+            synchronized (students) {
+                System.out.println(students.get(2));
+                System.out.println(students.get(3));
+            }
+        }).start();
+
+        new Thread(() -> {
+            synchronized (students) {
+                System.out.println(students.get(4));
+                System.out.println(students.get(5));
+            }
+
+        }).start();
+
+        return students;
     }
 }

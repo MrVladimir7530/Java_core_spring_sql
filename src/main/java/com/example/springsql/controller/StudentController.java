@@ -1,12 +1,14 @@
 package com.example.springsql.controller;
 
 import com.example.springsql.entities.Student;
+import com.example.springsql.entities.StudentNameAge;
 import com.example.springsql.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -53,4 +55,48 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/count")
+    public Integer getCountStudents() {
+        return studentService.getCountStudents();
+    }
+
+    @GetMapping("/avg")
+    public Integer getAvgStudentByAge() {
+        return studentService.getAvgStudentByAge();
+    }
+
+    @GetMapping("/last")
+    public List<StudentNameAge> getLastStudent() {
+        return studentService.getLastStudent();
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name) {
+        List<Student> studentsByName = studentService.getStudentsByName(name);
+        return ResponseEntity.ok(studentsByName);
+    }
+
+    @GetMapping("name/by")
+    public ResponseEntity<List<Student>> getStudentByNameWhereNameBeginWithCharacter(@RequestParam String character) {
+        try {
+            List<Student> studentList = studentService.getStudentByNameWhereNameBeginWithCharacter(character);
+            return ResponseEntity.ok(studentList);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("thread/console")
+    public ResponseEntity<List<Student>> printInConsoleWithThreadWithoutOrder() {
+        List<Student> studentList = studentService.printStudentInConsoleWithThreadWithoutOrder();
+        return ResponseEntity.ok(studentList);
+    }
+
+    @GetMapping("thread/console/with/order")
+    public ResponseEntity<List<Student>> printInConsoleWithThreadWithOrder() {
+        List<Student> studentList = studentService.printStudentInConsoleWithThreadWithOrder();
+        return ResponseEntity.ok(studentList);
+    }
+
 }
